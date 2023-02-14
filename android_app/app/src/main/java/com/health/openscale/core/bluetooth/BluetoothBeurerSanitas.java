@@ -542,7 +542,7 @@ public class BluetoothBeurerSanitas extends BluetoothCommunication {
         /* Why do we want to resume the state machine, when we are not the last remote user? --> Because we want to fetch measurements for all users and not just for the first one!
          * In the moment I do not understand this code, so I'll comment it out but leave it here for reference.*/
         if (currentRemoteUser.remoteUserId != remoteUsers.get(remoteUsers.size() - 1).remoteUserId) {
-            Timber.d("We were not on the last user. Resuming in step nr 5 to fetch data from further users...")
+            Timber.d("We were not on the last user. Resuming in step nr 5 to fetch data from further users...");
             // Only jump back to state 5 if we are in 5
             if( jumpNextToStepNr( 5, 5 ) ) {
                 // Now resume
