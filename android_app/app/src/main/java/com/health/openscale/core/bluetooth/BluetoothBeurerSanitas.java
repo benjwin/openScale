@@ -233,15 +233,16 @@ public class BluetoothBeurerSanitas extends BluetoothCommunication {
                         currentRemoteUser = remoteUsers.get(index);
                         break;
                     }
-                }
+                
 
-                // Fetch saved measurements
-                if (currentRemoteUser != null) {
-                    // We will be waiting for data in state 5
-                    waitForDataInStep = 5;
-                    Timber.d("Request saved measurements (CMD_GET_SAVED_MEASUREMENTS) for %s", currentRemoteUser.name);
-                    sendCommand(CMD_GET_SAVED_MEASUREMENTS, encodeUserId(currentRemoteUser));
-                    stopMachineState();
+                    // Fetch saved measurements
+                    if (currentRemoteUser != null) {
+                        // We will be waiting for data in state 5
+                        waitForDataInStep = 5;
+                        Timber.d("Request saved measurements (CMD_GET_SAVED_MEASUREMENTS) for %s", currentRemoteUser.name);
+                        sendCommand(CMD_GET_SAVED_MEASUREMENTS, encodeUserId(currentRemoteUser));
+                        stopMachineState();
+                    }
                 }
                 // No user found, just continue to next step.
                 break;
