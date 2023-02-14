@@ -768,8 +768,19 @@ public class BluetoothBeurerSanitas extends BluetoothCommunication {
                         }
                     }
                     // No saved data, no more waiting.
-                    waitForDataInStep = -1;
-                    resumeMachineState();
+
+
+                    // Resume fetching for measurements for other users:
+                    if (currentRemoteUser.remoteUserId != remoteUsers.get(remoteUsers.size() - 1).remoteUserId) {
+                        // Only jump back to state 5 if we are in 5
+                        if( jumpNextToStepNr( 5, 5 ) ) {
+                            // Now resume
+                            resumeMachineState();
+                        }
+                    } else {
+                        waitForDataInStep = -1;
+                        resumeMachineState();    
+                    }
                 }
                 // Otherwise wait for CMD_SAVED_MEASUREMENT notifications which will,
                 // once all measurements have been received, resume the state machine.
