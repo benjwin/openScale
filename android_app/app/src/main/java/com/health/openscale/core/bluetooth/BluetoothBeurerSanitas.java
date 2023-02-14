@@ -539,8 +539,8 @@ public class BluetoothBeurerSanitas extends BluetoothCommunication {
         // We sent a new command, so make sure we wait
         stopMachineState();
 
-        /* Why do we want to resume the state machine, when we are not the last remote user?
-         * In the moment I do not understand this code, so I'll comment it out but leave it here for reference.
+        /* Why do we want to resume the state machine, when we are not the last remote user? --> Because we want to fetch measurements for all users and not just for the first one!
+         * In the moment I do not understand this code, so I'll comment it out but leave it here for reference.*/
         if (currentRemoteUser.remoteUserId != remoteUsers.get(remoteUsers.size() - 1).remoteUserId) {
             // Only jump back to state 5 if we are in 5
             if( jumpNextToStepNr( 5, 5 ) ) {
@@ -548,7 +548,7 @@ public class BluetoothBeurerSanitas extends BluetoothCommunication {
                 resumeMachineState();
             }
         }
-        */
+        
     }
 
     private void processWeightMeasurement(byte[] data) {
