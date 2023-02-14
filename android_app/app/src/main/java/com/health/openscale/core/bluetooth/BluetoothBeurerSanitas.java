@@ -227,23 +227,38 @@ public class BluetoothBeurerSanitas extends BluetoothCommunication {
                 int index = remoteUsers.indexOf(currentRemoteUser) + 1;
                 currentRemoteUser = null;
 
+                Timber.d("index is %s", index);
+                if (currentRemoteUser != null) {
+                    Timber.d("CurrentRemoteUser  remoteUserID: %d, name: %s, localUserId: %d", currentRemoteUser.remoteUserId, currentRemoteUser.name, currentRemoteUser.localUserId);
+                } else {
+                    Timber.d("CurrentRemoteUser is null");
+                }
+                
+
+                Timber.d("[Debug] All Users: ");
+                for (RemoteUser rUser : remoteUsers) {
+                    Timber.d("   remoteUserID: %d, name: %s, localUserId: %d", rUser.remoteUserId, rUser.name, rUser.localUserId);
+                }
+
                 // Find the next remote user that exists locally
                 for (; index < remoteUsers.size(); ++index) {
                     if (remoteUsers.get(index).localUserId != -1) {
                         currentRemoteUser = remoteUsers.get(index);
                         break;
                     }
+                }
                 
 
-                    // Fetch saved measurements
-                    if (currentRemoteUser != null) {
-                        // We will be waiting for data in state 5
-                        waitForDataInStep = 5;
-                        Timber.d("Request saved measurements (CMD_GET_SAVED_MEASUREMENTS) for %s", currentRemoteUser.name);
-                        sendCommand(CMD_GET_SAVED_MEASUREMENTS, encodeUserId(currentRemoteUser));
-                        stopMachineState();
-                    }
+                // Fetch saved measurements
+                if (currentRemoteUser != null) {
+                    Timber.d("Found user: CurrentRemoteUser  remoteUserID: %d, name: %s, localUserId: %d", currentRemoteUser.remoteUserId, currentRemoteUser.name, currentRemoteUser.localUserId);
+                    // We will be waiting for data in state 5
+                    waitForDataInStep = 5;
+                    Timber.d("Request saved measurements (CMD_GET_SAVED_MEASUREMENTS) for %s", currentRemoteUser.name);
+                    sendCommand(CMD_GET_SAVED_MEASUREMENTS, encodeUserId(currentRemoteUser));
+                    stopMachineState();
                 }
+                
                 // No user found, just continue to next step.
                 break;
             case 6:
