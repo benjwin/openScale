@@ -542,6 +542,7 @@ public class BluetoothBeurerSanitas extends BluetoothCommunication {
         /* Why do we want to resume the state machine, when we are not the last remote user? --> Because we want to fetch measurements for all users and not just for the first one!
          * In the moment I do not understand this code, so I'll comment it out but leave it here for reference.*/
         if (currentRemoteUser.remoteUserId != remoteUsers.get(remoteUsers.size() - 1).remoteUserId) {
+            Timber.d("We were not on the last user. Resuming in step nr 5 to fetch data from further users...")
             // Only jump back to state 5 if we are in 5
             if( jumpNextToStepNr( 5, 5 ) ) {
                 // Now resume
@@ -767,17 +768,21 @@ public class BluetoothBeurerSanitas extends BluetoothCommunication {
                             Timber.w("...ignored, no data expected.");
                         }
                     }
-                    // No saved data, no more waiting.
+                    
 
 
                     // Resume fetching for measurements for other users:
+                    Timber.d("Resuming with other users");
                     if (currentRemoteUser.remoteUserId != remoteUsers.get(remoteUsers.size() - 1).remoteUserId) {
                         // Only jump back to state 5 if we are in 5
+                        Timber.d("We were not at the last user, jumping to state-machine step 5 again");
                         if( jumpNextToStepNr( 5, 5 ) ) {
                             // Now resume
                             resumeMachineState();
                         }
                     } else {
+                        // No saved data, no more waiting.
+                        Timber.d("no saved data, no further users, no more waiting");
                         waitForDataInStep = -1;
                         resumeMachineState();    
                     }
